@@ -1,0 +1,39 @@
+No_Prof<-sample(5:8,60,replace = TRUE )
+Pib<- sample(0:5,60,replace = TRUE)
+Por_Ocup<- sample(40:60,60,replace = TRUE)
+Por_Desoc<- sample(3:8,60,replace = TRUE)
+
+data<-data.frame(No_Prof,Pib,Por_Ocup,Por_Desoc)
+data2<-data[c(1:12,49:60),]; View(data2)
+
+datats<- ts(data,frequency = 12,start = 2010); View(datats)
+class(datats)
+x11()
+layout(1:2)
+plot(datats[,1],main = "Profesionistas",xlab = "Años",ylab="No de Profesionistas(miles)",col="dark blue")
+plot(datats[,3],main = "Tasa de Ocupados",xlab = "Años",ylab="Porcentaje",col="dark red")
+
+x11()
+layout(1:2)
+plot(datats[,2],main = "PIB",xlab = "Años",ylab="Crecimiento",col="dark blue")
+plot(datats[,4],main = "Tasa de Desocupados",xlab = "Años",ylab="Porcentaje",col="dark red")
+
+x11()
+plot(datats)
+
+No_Prof2<- ts(datats[,1], start=2010, freq=12)
+Pib2<- ts(datats[,2], start=2010,freq=12)
+Por_Ocup2<- ts(datats[,3], start=2010,freq=12)
+Por_Desoc2<- ts(datats[,4], start=2010,freq=12)
+multiple<- ts.intersect(No_Prof2,Por_Ocup2)
+multiple2<- ts.intersect(Pib2,Por_Desoc2)
+plot(multiple, main="Profesionistas y Ocupados", xlab="Años", ylab="Cantidad", col="yellow")
+plot(multiple2, main="PIB y Desocupados", xlab="Años", ylab="Cantidad", col="orange")
+multiple3<- ts.intersect(multiple,multiple2)
+plot(multiple3, main="Serie Multiple", xlab="Años", ylab="Cantidad", col="darkblue")
+
+layout(1:2)
+multiple4<-window(multiple3, start=c(2014,1), end=c(2014,12))
+x11();plot(multiple4, main="Serie Multiple del 2014", xlab="Años", ylab="Cantidad", col="deepskyblue4")
+
+#Concluimos que no se puede decir con exactitud si tienen una variacion estacional debido a que los datos arrojados son aleatorios
